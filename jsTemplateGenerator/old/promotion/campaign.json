@@ -1,0 +1,49 @@
+{
+  "TableName": "Campaign",
+  "UniqueKey": "campaignId",
+  "ForeignKey": [
+    {
+      "Table": "StoreCampaign",
+      "ThisTableKey": "id",
+      "ForeignTableKey": "campaignId"
+    },
+    {
+      "Table": "LimitTimeDiscount",
+      "ThisTableKey": "id",
+      "ForeignTableKey": "campaignId"
+    },
+    {
+      "Table": "MessageContent",
+      "ThisTableKey": "id",
+      "ForeignTableKey": "campaignId"
+    },
+    {
+      "Table": "MessageContent",
+      "ThisTableKey": "id",
+      "ForeignTableKey": "campaignId"
+    },
+    {
+      "Table": "CampaignMaterials",
+      "ThisTableKey": "id",
+      "ForeignTableKey": "campaignId"
+    }
+  ],
+  "MappingKey": [
+    {
+      "ThisTableKey": "id",
+      "MiddleTable": "CampaignTarget",
+      "MiddleKey": "campaignId",
+      "MappingKey": "targetId",
+      "MappingTable": "PromotionTarget",
+      "MappingTableKey": "targetId"
+    },
+    {
+      "ThisTableKey": "id",
+      "MiddleTable": "CampaignTag",
+      "MiddleKey": "campaignId",
+      "MappingKey": "tagId",
+      "MappingTable": "ActivityTag",
+      "MappingTableKey": "romens_id"
+    }
+  ]
+}

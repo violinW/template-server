@@ -1,0 +1,22 @@
+{
+  "TableName": "Belonging",
+  "Fields": [
+    {
+      "FieldName": "Id",
+      "Type": "GUID",
+      "PrimaryKey": true
+    },
+    {
+      "FieldName": "StudentId",
+      "Type": "GUID"
+    },
+    {
+      "FieldName": "Name",
+      "Type": "STRING"
+    },
+    {
+      "FieldName": "Remark",
+      "Type": "STRING"
+    }
+  ]
+}

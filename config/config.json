@@ -1,0 +1,17 @@
+{
+  "mysql": {
+    "connectionLimit": 20,
+    "host": "localhost",
+    "user": "root",
+    "password": "violin",
+    "port": "3306",
+    "supportBigNumbers": true,
+    "bigNumberStrings": true
+  },
+  "debugMode": true,
+  "authConfig": {
+    "expire": 7200,
+    "issuer": "https://violin.cn",
+    "secret": "beauty"
+  }
+}

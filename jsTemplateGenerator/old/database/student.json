@@ -1,0 +1,45 @@
+{
+  "TableName": "Student",
+  "UniqueKey": "Id",
+  "Fields": [
+    {
+      "FieldName": "Id",
+      "Type": "GUID",
+      "PrimaryKey": true
+    },
+    {
+      "FieldName": "Name",
+      "Type": "STRING"
+    },
+    {
+      "FieldName": "Age",
+      "Type": "STRING"
+    },
+    {
+      "FieldName": "Sex",
+      "Type": "NUMBER"
+    },
+    {
+      "FieldName": "Dept",
+      "Type": "STRING"
+    }
+  ],
+  "ForeignKey": [
+    {
+      "Table": "Belonging",
+      "ThisTableKey": "Id",
+      "ForeignTableKey": "StudentId"
+    }
+  ],
+  "MappingKey": [
+    {
+      "ThisTableKey": "Id",
+      "MiddleTable": "studentCourse",
+      "MiddleKey": "StudentId",
+      "MappingKey": "CourseId",
+      "MappingTable": "Course",
+      "MappingTableKey": "Id"
+
+    }
+  ]
+}

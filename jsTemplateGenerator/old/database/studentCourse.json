@@ -1,0 +1,22 @@
+{
+  "TableName": "StudentCourse",
+  "Fields": [
+    {
+      "FieldName": "Id",
+      "Type": "GUID",
+      "PrimaryKey": true
+    },
+    {
+      "FieldName": "StudentId",
+      "Type": "GUID"
+    },
+    {
+      "FieldName": "CourseId",
+      "Type": "GUID"
+    },
+    {
+      "FieldName": "Grade",
+      "Type": "NUMBER"
+    }
+  ]
+}

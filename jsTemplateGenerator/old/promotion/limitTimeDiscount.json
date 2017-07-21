@@ -1,0 +1,14 @@
+{
+  "TableName": "LimitTimeDiscount",
+  "UniqueKey": "promotionId",
+  "MappingKey": [
+    {
+      "ThisTableKey": "promotionId",
+      "MiddleTable": "LimitDiscountProduction",
+      "MiddleKey": "promotionId",
+      "MappingKey": "productionId",
+      "MappingTable": "Production",
+      "MappingTableKey": "productionId"
+    }
+  ]
+}

@@ -1,0 +1,135 @@
+业务模型
+
+观察所有数据库业务，都是是增删改查的组合，而再进一步观察增删改查，都是外键关系、映射关系的集合。基于这个观点，在业务系统中，绝大多数的业务逻辑都可以在“业务模型”的辅助下让代码自动完成。
+
+在“业务模型”中，我们所需要关注的点在于当前业务的核心对象有哪些外键关系和映射关系，在针对核心对象的增删改查中，这些外键关系和映射关系有多少种组合方式，确定了以上两点，就确定了一个业务模型的成分。
+
+```
+举例：
+我们现在需要对“班级”的信息进行增删改查。
+核心对象为班级（class），一个班级中有很多个学生（student），有很多个课程（course），有一个班主任老师（headTeacher），还有一间教室（classroom）。
+针对核心对象class，有以下几种外键及映射关系的组合：
+class + student
+class + course
+class + headTeacher
+class + classroom
+class + student + course
+class + student + course + headTeacher + classroom
+......
+```
+
+当确定了“业务模型”的成分,我们可以定义出以下的业务模型：
+
+``` js
+{
+    "TableName": "class",
+    "UniqueKey": "id",
+    "ForeignKey": [
+        //定义一个外键关系“Student”，描述 class 表与 student 表通过“id”字段与“class_id”字段形成外键关系
+        {
+            "name": "Student",
+            "Table": "student",
+            "ThisTableKey": "id",
+            "ForeignTableKey": "class_id"
+        }
+    ],
+    "MappingKey": [
+        //定义一个映射关系“Course”，描述 class 表与 course 表通过 class_course_mapping 表形成映射，其中的几个id是关联id
+        //"ThisTableKey"描述的是 class 表的主键，“MiddleKey”描述的是 class_course_mapping 中映射到class表的id
+        //"MappingKey"描述的是 class_course_mapping 中映射到 course 表的 id ，"MappingTableKey"描述的是 course 表的主键
+        {
+            "name": "Course",
+            "ThisTableKey": "id",
+            "MiddleTable": "class_course_mapping",
+            "MiddleKey": "class_id",
+            "MappingKey": "course_id",
+            "MappingTable": "course",
+            "MappingTableKey": "id"
+        },
+        {
+            "name": "Classroom",
+            "ThisTableKey": "id",
+            "MiddleTable": "class_classroom_mapping",
+            "MiddleKey": "class_id",
+            "MappingKey": "classroom_id",
+            "MappingTable": "classroom",
+            "MappingTableKey": "id"
+        },
+        {
+            "name": "HeadTeacher",
+            "ThisTableKey": "id",
+            "MiddleTable": "head_teacher",
+            "MiddleKey": "class_id",
+            "MappingKey": "teacher_id",
+            "MappingTable": "teacher",
+            "MappingTableKey": "id"
+        },
+        {
+            "name": "Course_To_Teacher",
+            "ThisTableKey": "id",
+            "MiddleTable": "class_course_mapping",
+            "MiddleKey": "class_id",
+            "MappingKey": "course_id",
+            "MappingTable": "course",
+            "MappingTableKey": "id"
+        }
+    ],
+    //定义了三种模式，分别描述了三种 class 相关的外键和映射关系集合
+    "mode": {
+        "type_one": {
+            "ForeignKey": [
+                "Student"
+            ]
+        },
+        "type_two": {
+            "ForeignKey": [
+                "Student"
+            ],
+            "MappingKey": [
+                "Course"
+            ]
+        },
+        "type_three": {
+            "MappingKey": [
+                "Course_To_Teacher"
+            ]
+        }
+    }
+}
+```
+
+以上业务还可以以student、course等为核心业务对象再建立几个业务模型
+
+新建一个modelList.js,将以上业务模型放进一个对象
+
+```
+var modelList={
+    classModel:...,
+    studentModel:...,
+    courseModel:...
+}
+```
+
+当定义好以上的业务模型之后，就可以投入使用了：
+
+```
+npm install icrm-business-model
+```
+```
+const modelList = require("modelList.js");
+const knex = require('knex')({client: "mysql"});
+const businessModel = require("icrm-business-model")((knex, modelList));
+const CommonUseCase = businessModel.CommonUseCase;
+const dbName = "testDB";
+
+//CommonUseCase用于根据业务模型构建常用方法
+//第一个参数：数据库名
+//第二个参数：业务模型名称（modelList中的名称）
+//第三个参数：模式名称（从模型中选择一个mode）
+const classBasicMethods = CommonUseCase(dbName, "classModel", "type_two");
+//classBasicMethods为一系列增删改查的公共方法
+```
+另外还提供了一个单表层面的公共方法库
+
+const basicModel= businessModel.CommonDataSource;
+```

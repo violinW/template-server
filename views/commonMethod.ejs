@@ -1,0 +1,49 @@
+项目公共方法
+
+#### 说明：项目中所有可以公用的方法汇总
+
+#### 用法:
+```
+Anne.CommonMethod.basicMethod   公共基础方法列表
+Anne.CommonMethod.  ...
+可继续拓展CommonMethod,拓展方法为：
+1、新建一个文件放在任意路径下，在新建的文件中添加公共方法，注意用标准的注释方法来注释文件。
+2、在 assistant/config.json 文件中的参数 commonMethodPath 下，添加新建的文件路径。
+```
+
+#### 编写公共方法的注释模板
+
+```
+文件注释：
+/**
+* 文件描述
+*
+* @module commonMethods 项目公共方法
+* @class basicMethods 基础方法
+* @constructor
+*/
+
+方法的注释：
+/**
+* 方法描述
+*
+* 创建者：violin
+*
+* 修改记录：2017-06-12 violin 修改了参数
+*
+* @method test
+* @param a 参数1
+* @param b 参数2
+* @param c 参数3
+* @returns {string} 返回值
+*/
+```
+
+#### 如何查看所有的公共方法文档：
+
+```
+npm -g install yuidocjs
+yuidoc .
+yuidoc --server 5001
+访问 127.0.0.1:5001，可以查看所有公共方法的文档
+```

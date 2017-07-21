@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>项目助手文档</title>
+    <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+    <script src="//cdn.bootcss.com/markdown-it/8.3.1/markdown-it.js"></script>
+    <script src="//cdn.jsdelivr.net/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap/3.2.0/css/bootstrap.css"/>
+</head>
+<body>
+<div class="introduction">
+    <h1 class="title">项目助手文档</h1>
+    <ul class="head">
+        <li class="summary active">简介</li>
+        <li class="businessModel">BusinessModel</li>
+        <li class="commonMethod">CommonMethod</li>
+        <li class="commonReferences">CommonReferences</li>
+        <li class="dataStructure">DataStructure</li>
+    </ul>
+    <div id="content">
+    </div>
+</div>
+</body>
+<script type="text/html" id="summary">
+    <% include summary.ejs %>
+</script>
+<script type="text/html" id="businessModel">
+    <% include businessModel.ejs %>
+</script>
+<script type="text/html" id="commonMethod">
+    <% include commonMethod.ejs %>
+</script>
+<script type="text/html" id="commonReferences">
+    <% include commonReferences.ejs %>
+</script>
+<script type="text/html" id="dataStructure">
+    <% include dataStructure.ejs %>
+</script>
+<script>
+    var MarkdownIt = new markdownit();
+    var result = MarkdownIt.render($("#summary").html());
+    $('#content').html(result);
+    $(".head li").click(function () {
+        $(".head li").removeClass("active")
+        $(this).addClass("active")
+        $('#content').html(MarkdownIt.render($("#" + this.className.split(' ')[0]).html()))
+    })
+</script>
+</html>

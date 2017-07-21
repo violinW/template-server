@@ -1,0 +1,4 @@
+{
+  "TableName": "MessageTempate",
+  "UniqueKey": "templateId"
+}

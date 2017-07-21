@@ -1,0 +1,11 @@
+{
+  "name": "公共方法说明文档",
+  "description": "利用次文档可快速查找所有公共方法",
+  "version": "1.0.0",
+  "url": "http://localhost:3000/classes/commonMethods",
+  "options": {
+    "linkNatives": "true",
+    "outdir": "./docs",
+    "paths": "."
+  }
+}

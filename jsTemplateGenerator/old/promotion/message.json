@@ -1,0 +1,11 @@
+{
+  "TableName": "MessageContent",
+  "UniqueKey": "msgId",
+  "ForeignKey": [
+    {
+      "Table": "MsgSendTime",
+      "ThisTableKey": "msgId",
+      "ForeignTableKey": "msgId"
+    }
+  ]
+}
