@@ -7,7 +7,7 @@ const config = require('./config.json');
 const knex = require('../modules/db');
 //const businessModel = require("icrm-business-model");
 const modelList = require("./case/modelEntity/modelList.js");
-const businessModel = require("../jsTemplateGenerator/new/businessModel/index.js")(knex, modelList);
+const businessModel = require("express-business-model")(knex, modelList);
 
 //公共方法的存放路径
 const commonMethodPath = config.commonMethodPath;
