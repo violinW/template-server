@@ -17,8 +17,8 @@ router.get('/', function(req, res, next) {
 
 // 增加用户
 //TODO 同时支持get,post
-router.post('/addUser', function(req, res, next) {
-    userDao.add(req, res, next);
+router.post('/register', function(req, res, next) {
+    userDao.register(req, res, next);
 });
 
 router.get('/query', function(req, res, next) {

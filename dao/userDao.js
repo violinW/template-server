@@ -1,29 +1,45 @@
 'use strict';
 module.exports = (dbName, Anne)=> {
-    const {businessModel, logger, jwt, config} = Anne.CommonReferences;
+    const {businessModel, logger, jwt, config, bcrypt} = Anne.CommonReferences;
     const {CommonUseCase, dataStructure, dataType} = businessModel;
 
     const loginMethods = CommonUseCase(dbName, "User", "user_login");
     const registerMethods = CommonUseCase(dbName, "User", "user_register");
+    const SALT_WORK_FACTOR = 10;
 
     return {
-        add(req, res, next) {
+        register(req, res, next) {
             const data = req.body;
             logger.debug('display data:' + JSON.stringify(data));
-            //数据处理
+            //数据处理(将显示字段转换成数据库字段)
             const dealData = dataStructure.getModel('User_Basic_Info').sourceToDisplay(data);
             dealData.UUID = dataType.createUUID();
 
             logger.debug('source data:' + JSON.stringify(dealData));
 
-            return registerMethods.addSimpleList(dealData)
-            .then((data)=> {
-                logger.trace(data);
-                res.send(data[0]);
-            })
-            .catch((error)=> {
-                logger.trace(error);
-                res.send('fail');
+            // 进行加密
+            bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt){
+                if(err){
+                    return next(err);
+                }
+                 bcrypt.hash(dealData.password, salt, function(err, hash){
+                     if(err){
+                         return next(err);
+                     }
+                     dealData.password = hash;
+
+                     return registerMethods.addSimpleList(dealData)
+                         .then((data)=> {
+                             logger.trace(data);
+                             res.status(200).json({
+                                 id: dealData.UUID
+                             });
+                         })
+                         .catch((error)=> {
+                             logger.trace(error);
+                             return next(error);
+                         });
+                 })
             });
         },
         queryById(req, res, next){
@@ -31,30 +47,30 @@ module.exports = (dbName, Anne)=> {
             return registerMethods.getSimpleDetail('UUID', req.query.id)
             .then((data)=> {
                 logger.trace(data);
-                //数据处理
+                //数据处理(将数据库字段转换成显示字段)
                 const dealData = dataStructure.getModel('User_Basic_Info').displayToSource(data[0]);
-                res.send(dealData);
+                res.status(200).json(dealData);
             })
             .catch((error)=> {
                 logger.trace(error);
-                res.send('fail');
+                next(error);
             });
         },
         delete(req, res, next){
             return registerMethods.deleteById(req.query.id)
             .then((data)=> {
                 logger.trace(data);
-                res.send(data);
+                res.status(200).json(data);
             })
             .catch((error)=> {
                 logger.trace(error);
-                res.send('fail');
+                next(error);
             });
         },
         update(req, res, next){
             const data = req.body;
             logger.debug('display data:' + JSON.stringify(data));
-            //数据处理
+            //数据处理(将显示字段转换成数据库字段)
             const dealData = dataStructure.getModel('User_Basic_Info').sourceToDisplay(data);
 
             logger.debug('source data:' + JSON.stringify(dealData));
@@ -62,11 +78,11 @@ module.exports = (dbName, Anne)=> {
             return registerMethods.putSimpleData(req.query.id, dealData)
             .then((data)=> {
                 logger.trace(data);
-                res.send('success');
+                res.sendStatus(200);
             })
             .catch((error)=> {
-                logger.trace(error);
-                res.send('fail');
+                logger.trace(error)
+                next(error);
             });
         },
         login(req, res, next){
@@ -76,42 +92,58 @@ module.exports = (dbName, Anne)=> {
             logger.debug(`username: ${username}, password: ${password}`);
 
             return loginMethods.getList({
-                nickname: username,
-                password
+                nickname: username
             }, null, null, 10, 1, 'register_time', 'desc')
-            .then(list=> {
-                //如果能够查到用户数据则验证通过,否则验证失败
-                if(list.length){
-                    return {
-                        username
+                .then(list=> {
+                    //如果能够查到用户数据则验证通过,否则验证失败
+                    if(list.length === 0){
+                        return Promise.reject('找不到用户');
+                    }else if(list.length){
+                        let pw = list[0].password;
+                        return {
+                            pw
+                        };
+                    }else{
+                        return Promise.reject('fail');
                     }
-                }else if(list.length === 0){
-                    return Promise.reject('登录不通过');
-                }else{
-                    return Promise.reject('fail');
-                }
-            })
-            //生成jwt
-            .then(data=> {
-                let jti = (Math.random() * 100000000000000000).toString();
-                let iat = Date.now() / 1000;
-                let payload = {
-                    jti: jti,                           // jwt id
-                    iss: config.authConfig.issuer,             // jwt 签发者
-                    iat: iat,                           // 签发时间
-                    exp: iat + config.authConfig.expire,       // 失效时间
-                    sub: data.username,            // 使用用户
-                };
-                logger.debug(`payload: ${JSON.stringify(payload)}`)
+                })
+                .then(data=> {
+                    return new Promise(function (resolve, reject){
+                        //比较密码
+                        bcrypt.compare(password, data.pw, function(err, res) {
+                            logger.debug(`res: ${res}`)
+                            if(err||!res){
+                                reject('密码错误');
+                            }
+                            resolve({
+                                username
+                            });
+                        });
+                    });
+                })
+                //生成jwt
+                .then(data=> {
+                    logger.debug(`data: ${data}`)
+                    let jti = (Math.random() * 100000000000000000).toString();
+                    let iat = Date.now() / 1000;
+                    let payload = {
+                        jti: jti,                           // jwt id
+                        iss: config.authConfig.issuer,             // jwt 签发者
+                        iat: iat,                           // 签发时间
+                        exp: iat + config.authConfig.expire,       // 失效时间
+                        sub: username,            // 使用用户
+                    };
+                    logger.debug(`payload: ${JSON.stringify(payload)}`)
 
-                let token = jwt.sign(payload, config.authConfig.secret);
-                logger.debug(`token: ${token}`)
-                res.send(token);
-            })
-            .catch((error)=> {
-                logger.trace(error);
-                res.send('fail');
-            })
+                    let token = jwt.sign(payload, config.authConfig.secret);
+                    logger.debug(`token: ${token}`)
+                    res.status(200).json({token: token});
+                })
+                .catch((error)=>{
+                    logger.error(error);
+                    next(error);
+                })
+
         }
     }
 }

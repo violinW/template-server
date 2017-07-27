@@ -4,6 +4,7 @@ const _ = require("lodash");
 const knex = require('../../modules/db');
 const jwt = require('jsonwebtoken');
 const config = require('../../config/config.json');
+const bcrypt = require('bcrypt');
 
 module.exports = (businessModel)=>{
   require("../case/dispModelEntity/list.js")(businessModel);
@@ -13,6 +14,7 @@ module.exports = (businessModel)=>{
     businessModel: businessModel,
     _: _,
     jwt: jwt,
-    config: config
+    config: config,
+    bcrypt: bcrypt  //加密算法
   };
 }

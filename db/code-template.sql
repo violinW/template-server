@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS `code_template`.`user` (
   `UUID` VARCHAR(45) NOT NULL,
   `user_number` VARCHAR(45) NOT NULL COMMENT '用户编号',
   `nickname` VARCHAR(45) NOT NULL COMMENT '昵称',
-  `password` VARCHAR(45) NOT NULL COMMENT '密码',
+  `password` VARCHAR(100) NOT NULL COMMENT '密码',
   `sex` ENUM('male', 'female') NOT NULL DEFAULT 'male' COMMENT '性别',
   `birthday` DATETIME DEFAULT NULL COMMENT '生日',
   `phone` VARCHAR(45) DEFAULT '' COMMENT '电话',
