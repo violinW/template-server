@@ -123,6 +123,7 @@ CREATE TABLE IF NOT EXISTS `code_template`.`works` (
   `update_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   `template_id` INT NOT NULL COMMENT '模板Id',
   `css_id` INT NOT NULL COMMENT '样式Id',
+  `default_category_id` INT NOT NULL COMMENT '默认种类Id',
   PRIMARY KEY (`id`, `UUID`))
 ENGINE = InnoDB DEFAULT CHARSET=utf8 COMMENT = '作品表';
 

@@ -43,7 +43,7 @@ module.exports = (dbName, Anne)=> {
             });
         },
         queryById(req, res, next){
-            logger.debug(`id: ${req.query.id}`)
+            logger.debug(`id: ${req.query.id}`);
             return registerMethods.getSimpleDetail('UUID', req.query.id)
             .then((data)=> {
                 logger.trace(data);
@@ -81,7 +81,7 @@ module.exports = (dbName, Anne)=> {
                 res.sendStatus(200);
             })
             .catch((error)=> {
-                logger.trace(error)
+                logger.trace(error);
                 next(error);
             });
         },
@@ -131,7 +131,7 @@ module.exports = (dbName, Anne)=> {
                         iss: config.authConfig.issuer,             // jwt 签发者
                         iat: iat,                           // 签发时间
                         exp: iat + config.authConfig.expire,       // 失效时间
-                        sub: username,            // 使用用户
+                        sub: username            // 使用用户
                     };
                     logger.debug(`payload: ${JSON.stringify(payload)}`)
 

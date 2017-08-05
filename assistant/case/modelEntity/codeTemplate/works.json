@@ -1,0 +1,9 @@
+{
+  "TableName": "works",
+  "UniqueKey": "UUID",
+  "mode": {
+    "default": {
+      "dataStructure": "Works"
+    }
+  }
+}

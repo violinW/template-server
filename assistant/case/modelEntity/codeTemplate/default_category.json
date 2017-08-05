@@ -1,0 +1,9 @@
+{
+  "TableName": "default_category",
+  "UniqueKey": "UUID",
+  "mode": {
+    "default": {
+      "dataStructure": "Default_Category"
+    }
+  }
+}

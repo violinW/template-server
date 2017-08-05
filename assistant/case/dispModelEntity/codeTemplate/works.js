@@ -82,6 +82,13 @@ module.exports=(businessModel)=> {
         "mappingName": "css_id",
         "mappingType": "string",
         "defaultValue": dataType.string("321")
+      },
+      "default_category_id": {
+        "type": "string",
+        "describe": "默认模板Id",
+        "mappingName": "default_category_id",
+        "mappingType": "string",
+        "defaultValue": dataType.string("231")
       }
     }
   });
