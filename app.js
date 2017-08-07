@@ -28,7 +28,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 //验证token并查询用户信息
-app.use(tokenVerify);
+//app.use(tokenVerify);
 
 app.use('/', index);
 app.use('/user', user);

@@ -28,7 +28,7 @@ module.exports = (dbName, Anne)=> {
           //数据转换
           return  _.map(data, (category)=>{
             let transferData = category;
-            transferData.works = dataStructure.getModel('Works').displayToSource(category.works);
+            transferData.works = dataStructure.getModel('Works').sourceToDisplay(category.works);
             return transferData;
           });
         })
