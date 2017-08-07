@@ -4,12 +4,16 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var port = require('./config/config.json').server.port;
+var tokenVerify = require('./modules/tokenVerify');
 
 var index = require('./routes/index');
 var user = require('./routes/user');
 var works = require('./routes/works');
 
 var app = express();
+
+app.listen(port);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -22,6 +26,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+//验证token并查询用户信息
+app.use(tokenVerify);
 
 app.use('/', index);
 app.use('/user', user);

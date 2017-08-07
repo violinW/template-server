@@ -13,5 +13,8 @@
     "expire": 7200,
     "issuer": "https://violin.cn",
     "secret": "beauty"
+  },
+  "server": {
+    "port": 3300
   }
 }
