@@ -100,8 +100,10 @@ module.exports = (dbName, Anne)=> {
                         return Promise.reject('找不到用户');
                     }else if(list.length){
                         let pw = list[0].password;
+                        let userId = list[0].UUID;
                         return {
-                            pw
+                            pw,
+                            userId
                         };
                     }else{
                         return Promise.reject('fail');
@@ -111,12 +113,12 @@ module.exports = (dbName, Anne)=> {
                     return new Promise(function (resolve, reject){
                         //比较密码
                         bcrypt.compare(password, data.pw, function(err, res) {
-                            logger.debug(`res: ${res}`)
+                            logger.debug(`res: ${res}`);
                             if(err||!res){
                                 reject('密码错误');
                             }
                             resolve({
-                                username
+                                userId: data.userId
                             });
                         });
                     });
@@ -131,12 +133,12 @@ module.exports = (dbName, Anne)=> {
                         iss: config.authConfig.issuer,             // jwt 签发者
                         iat: iat,                           // 签发时间
                         exp: iat + config.authConfig.expire,       // 失效时间
-                        sub: username            // 使用用户
+                        sub: data.userId            // 使用用户
                     };
-                    logger.debug(`payload: ${JSON.stringify(payload)}`)
+                    logger.debug(`payload: ${JSON.stringify(payload)}`);
 
                     let token = jwt.sign(payload, config.authConfig.secret);
-                    logger.debug(`token: ${token}`)
+                    logger.debug(`token: ${token}`);
                     res.status(200).json({token: token});
                 })
                 .catch((error)=>{
