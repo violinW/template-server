@@ -1,9 +1,27 @@
 {
   "TableName": "works",
   "UniqueKey": "UUID",
+
+  "MappingKey": [
+    {
+      "name": "my_works",
+      "ThisTableKey": "UUID",
+      "MiddleTable": "my_works",
+      "MiddleKey": "works_UUID",
+      "MappingKey": "user_UUID",
+      "MappingTable": "user",
+      "MappingTableKey": "UUID"
+    }
+  ],
   "mode": {
     "default": {
       "dataStructure": "Works"
+    },
+    "self": {
+      "dataStructure": "Works",
+      "MappingKey": [
+        "my_works"
+      ]
     }
   }
 }

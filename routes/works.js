@@ -28,4 +28,10 @@ router.get('/public/:id', function(req, res, next) {
     worksDao.publicWork(req, res, next);
 });
 
+//添加个人作品
+router.post('/add', function(req, res, next) {
+  worksDao.addWork(req, res, next);
+});
+
+
 module.exports = router;

@@ -62,13 +62,13 @@ module.exports=(businessModel)=> {
         "mappingType": "int",
         "defaultValue": dataType.int("5")
       },
-      "update_time": {
-        "type": "time",
-        "describe": "更新时间",
-        "mappingName": "update_time",
-        "mappingType": "string",
-        "defaultValue": dataType.time("2017-07-12 00:00:00")
-      },
+      //"update_time": {
+      //  "type": "time",
+      //  "describe": "更新时间",
+      //  "mappingName": "update_time",
+      //  "mappingType": "string",
+      //  "defaultValue": dataType.time("2017-07-12 00:00:00")
+      //},
       "template_id": {
         "type": "string",
         "describe": "模板Id",

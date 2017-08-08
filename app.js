@@ -27,11 +27,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-//验证token并查询用户信息
-//app.use(tokenVerify);
+app.use('/user', user);
 
 app.use('/', index);
-app.use('/user', user);
+//验证token并查询用户信息
+app.use(tokenVerify);
 app.use('/works', works);
 
 // catch 404 and forward to error handler

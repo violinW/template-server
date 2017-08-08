@@ -1,6 +1,6 @@
 'use strict';
 module.exports = (dbName, Anne)=> {
-  const {businessModel, logger, jwt, config, bcrypt} = Anne.CommonReferences;
+  const {businessModel, logger, jwt, config, bcrypt, _} = Anne.CommonReferences;
   const {CommonUseCase, dataStructure, dataType} = businessModel;
 
   const loginMethods = CommonUseCase(dbName, "User", "user_login");
@@ -9,20 +9,25 @@ module.exports = (dbName, Anne)=> {
 
   return {
     register(req, res, next) {
-      const data = req.body;
-      logger.debug('display data:' + JSON.stringify(data));
       //查找最后一个用户的编号
-      return loginMethods.getAllDataList('register_time', 'desc')
+      return registerMethods.getAllDataList('register_time', 'desc')
         .then((list)=> {
           const lastNo = list.length ? list[0].user_number : 0;
+          logger.debug('lastNo:' + list);
+          const data = req.body;
           data.GUID = dataType.createUUID();
           //用户编号
-          data.userNumber = _.padStart(((parseInt(lastNo))+1).toString(), 8, '0');
+          data.userNumber = _.padStart((parseInt(lastNo) + 1).toString(), 8, '0');
+          data.register_time = new Date();
+          logger.debug('display data:' + JSON.stringify(data));
           //数据处理(将显示字段转换成数据库字段)
           const dealData = dataStructure.getModel('User_Basic_Info').displayToSource(data);
 
           logger.debug('source data:' + JSON.stringify(dealData));
+          return dealData;
 
+        })
+        .then((dealData)=> {
           // 进行加密
           bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
             if (err) {
@@ -47,7 +52,6 @@ module.exports = (dbName, Anne)=> {
                 });
             })
           });
-
         })
     },
     queryById(req, res, next){

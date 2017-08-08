@@ -12,7 +12,7 @@
     "debug": "=2.6.0",
     "ejs": "=2.5.5",
     "express": "=4.14.1",
-    "express-business-model": "=1.0.3-beta",
+    "express-business-model": "=1.0.5-beta",
     "knex": "=0.12.6",
     "lodash": "=4.15.0",
     "logger-romens": "=1.0.1",
