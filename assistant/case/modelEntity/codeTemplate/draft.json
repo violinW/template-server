@@ -1,0 +1,9 @@
+{
+  "TableName": "draft_box",
+  "UniqueKey": "UUID",
+  "mode": {
+    "default": {
+      "dataStructure": "Draft_Box"
+    }
+  }
+}

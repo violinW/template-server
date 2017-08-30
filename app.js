@@ -4,12 +4,14 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var cors = require('cors');
 var port = require('./config/config.json').server.port;
 var tokenVerify = require('./modules/tokenVerify');
 
 var index = require('./routes/index');
 var user = require('./routes/user');
 var works = require('./routes/works');
+var draft = require('./routes/draft');
 
 var app = express();
 
@@ -18,6 +20,8 @@ app.listen(port);
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
+app.use(cors());
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -33,6 +37,7 @@ app.use('/', index);
 //验证token并查询用户信息
 app.use(tokenVerify);
 app.use('/works', works);
+app.use('/draft', draft);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

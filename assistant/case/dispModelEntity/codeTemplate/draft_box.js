@@ -5,18 +5,18 @@ module.exports=(businessModel)=> {
     name: "Draft_Box",
     describe: "草稿箱模型",
     structure: {
-      "id": {
-        "type": "int",
-        "describe": "主键",
+      "UUID": {
+        "type": "string",
+        "describe": "逻辑主键",
         "key": true,
-        "mappingName": "id",
-        "mappingType": "int",
-        "defaultValue": dataType.int("1")
+        "mappingName": "GUID",
+        "mappingType": "string",
+        "defaultValue": dataType.string("0000001")
       },
       "work_name": {
         "type": "string",
         "describe": "作品名称",
-        "mappingName": "work_name",
+        "mappingName": "name",
         "mappingType": "string",
         "defaultValue": dataType.string("狂拽炫酷")
       },
@@ -40,6 +40,13 @@ module.exports=(businessModel)=> {
         "mappingName": "css",
         "mappingType": "string",
         "defaultValue": dataType.string("样式")
+      },
+      "params": {
+        "type": "string",
+        "describe": "参数",
+        "mappingName": "params",
+        "mappingType": "string",
+        "defaultValue": dataType.string("参数")
       },
       "user_UUID": {
         "type": "string",
