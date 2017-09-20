@@ -3,7 +3,7 @@
   "UniqueKey": "UUID",
   "mode": {
     "default": {
-      "dataStructure": "Draft_Box"
+      "dataStructure": "Draft_Box_Basic"
     }
   }
 }

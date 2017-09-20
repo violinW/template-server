@@ -38,12 +38,12 @@ module.exports = (dbName, Anne) => {
      * @param next
      */
     getDraftList(req, res, next){
-      const userID = req.query.userId;
+      const userID = req.userId;
       logger.debug(`userID: ${userID}`);
 
       return draftMethods.getList({
         'user_UUID': userID
-      })
+      }, null, null, null, null, 'save_time')
           .then((list) => {
             let result = dataStructure.getModel('Draft_Box').sourceToDisplay(list);
             logger.trace(JSON.stringify(result));

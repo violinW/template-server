@@ -2,7 +2,7 @@ module.exports=(businessModel)=> {
   const {dataStructure, dataType} = businessModel;
 
   dataStructure.setModel({
-    name: "Draft_Box",
+    name: "Draft_Box_Basic",
     describe: "草稿箱模型",
     structure: {
       "UUID": {
@@ -19,7 +19,13 @@ module.exports=(businessModel)=> {
         "mappingName": "name",
         "mappingType": "string",
         "defaultValue": dataType.string("狂拽炫酷")
-      },
+      }
+    }
+  })
+  dataStructure.setModel({
+    name: "Draft_Box",
+    describe: "草稿箱模型",
+    structure: {
       "save_time": {
         "type": "time",
         "describe": "保存时间",
@@ -56,5 +62,5 @@ module.exports=(businessModel)=> {
         "defaultValue": dataType.string("0000001")
       }
     }
-  });
+  }).inheritOrganizer([dataStructure.getModel("Draft_Box_Basic")]);
 }
