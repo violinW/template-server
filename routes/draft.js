@@ -8,9 +8,13 @@ const Anne = Assistent.Anne;
 var draftDao = require('../dao/draftDao')(dbName, Anne);
 
 
-// 获取作品分组列表
+// 添加草稿
 router.post('/add', function(req, res, next) {
   draftDao.addDraft(req, res, next);
+});
+// 按作者获取草稿列表
+router.get('/list', function(req, res, next) {
+  draftDao.getDraftList(req, res, next);
 });
 
 
