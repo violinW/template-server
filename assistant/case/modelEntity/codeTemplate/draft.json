@@ -4,6 +4,9 @@
   "mode": {
     "default": {
       "dataStructure": "Draft_Box_Basic"
+    },
+    "draft_detail": {
+      "dataStructure": "Draft_Box_Ext"
     }
   }
 }

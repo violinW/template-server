@@ -33,5 +33,10 @@ router.post('/add', function(req, res, next) {
   worksDao.addWork(req, res, next);
 });
 
+//添加个人作品
+router.get('/myWorks/list', function(req, res, next) {
+  worksDao.myWorksList(req, res, next);
+});
+
 
 module.exports = router;

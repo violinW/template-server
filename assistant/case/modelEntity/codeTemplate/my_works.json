@@ -1,0 +1,20 @@
+{
+  "TableName": "my_works",
+  "UniqueKey": "id",
+  "ForeignKey": [
+    {
+      "name": "user_works",
+      "Table": "works",
+      "ThisTableKey": "works_UUID",
+      "ForeignTableKey": "UUID"
+    }
+  ],
+  "mode": {
+    "default": {
+      "dataStructure": "My_Works",
+      "ForeignKey": [
+        "user_works"
+      ]
+    }
+  }
+}

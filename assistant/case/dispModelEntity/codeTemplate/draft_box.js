@@ -23,7 +23,7 @@ module.exports=(businessModel)=> {
     }
   })
   dataStructure.setModel({
-    name: "Draft_Box",
+    name: "Draft_Box_Ext",
     describe: "草稿箱模型",
     structure: {
       "save_time": {
