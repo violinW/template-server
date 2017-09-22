@@ -13,14 +13,36 @@
       "MappingTableKey": "UUID"
     }
   ],
+  "ForeignKey": [
+    {
+      "name": "css",
+      "Table": "css",
+      "ThisTableKey": "css_id",
+      "ForeignTableKey": "UUID"
+    },
+    {
+      "name": "params",
+      "Table": "params",
+      "ThisTableKey": "params_id",
+      "ForeignTableKey": "UUID"
+    },
+    {
+      "name": "template",
+      "Table": "template",
+      "ThisTableKey": "template_id",
+      "ForeignTableKey": "UUID"
+    }
+  ],
   "mode": {
     "default": {
       "dataStructure": "Works"
     },
     "self": {
       "dataStructure": "Works",
-      "MappingKey": [
-        "my_works"
+      "ForeignKey":[
+        "css",
+        "params",
+        "template"
       ]
     }
   }

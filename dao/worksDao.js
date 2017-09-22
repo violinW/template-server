@@ -1,6 +1,6 @@
 'use strict';
 module.exports = (dbName, Anne) => {
-  const {businessModel, _, logger, config, Promise} = Anne.CommonReferences;
+  const {businessModel, _, logger, Promise} = Anne.CommonReferences;
   const {CommonUseCase, dataStructure, dataType} = businessModel;
 
   const worksMethods = CommonUseCase(dbName, "Works", "default");
@@ -104,25 +104,45 @@ module.exports = (dbName, Anne) => {
           });
     },
     addWork(req, res, next){
+      const userID = req.userId;
       const data = req.body;
       logger.debug(`display data: ${JSON.stringify(data)}`);
 
-      const insertData = {
-        mainData: dataStructure.getModel('Works').displayToSource(data)
+      let workId = dataType.createUUID();
+
+      const myWorkMapData = {
+        user_UUID: userID,
+        works_UUID: workId
       };
-      insertData.mainData.UUID = dataType.createUUID();
-      insertData.mainData.status = dataType.enum('works_status').convertToKey('默认类型(正常状态)');
-      insertData.mainData.type = dataType.enum('works_type').convertToKey('私有类型');
-      const myWorksInsertData = [{
-        "user_UUID": req.userId
-      }];
-      insertData.my_worksData = myWorksInsertData;
 
-      logger.debug(`source data: ${JSON.stringify(insertData)}`);
+      const workData = {
+        mainData: {
+          UUID: dataType.createUUID(),
+          name: data.name,
+          template_id: dataType.createUUID(),
+          css_id: dataType.createUUID(),
+          params_id: dataType.createUUID()
+        },
+        cssData: [{
+          body: data.css
+        }],
+        paramsData: [{
+          body: data.params
+        }],
+        templateData: [{
+          body: data.template
+        }]
+      };
 
-      return myUserMethods.addJoinData(insertData)
+      logger.debug(`work data: ${JSON.stringify(workData)}`);
+
+      return myWorksMethods.addSimpleList(myWorkMapData)
+          .then(()=> {
+            return myUserMethods.addJoinData(workData)
+          })
           .then((result) => {
-            res.status(200).send('新增成功');
+            logger.trace(JSON.stringify(result));
+            res.status(200).json({msg: '新增我的作品成功'});
           })
           .catch((error) => {
             logger.trace(error);

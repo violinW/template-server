@@ -11,7 +11,7 @@ USE `code_template` ;
 DROP TABLE IF EXISTS `code_template`.`user`;
 CREATE TABLE IF NOT EXISTS `code_template`.`user` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
-  `UUID` VARCHAR(45) NOT NULL,
+  `UUID` VARCHAR(45) UNIQUE NOT NULL,
   `user_number` VARCHAR(45) NOT NULL COMMENT '用户编号',
   `nickname` VARCHAR(45) NOT NULL COMMENT '昵称',
   `password` VARCHAR(100) NOT NULL COMMENT '密码',
@@ -75,7 +75,7 @@ ENGINE = InnoDB DEFAULT CHARSET=utf8 COMMENT = '类别表';
 DROP TABLE IF EXISTS `code_template`.`draft_box`;
 CREATE TABLE IF NOT EXISTS `code_template`.`draft_box` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
-  `UUID` VARCHAR(45) NOT NULL,
+  `UUID` VARCHAR(45) NOT NULL UNIQUE,
   `work_name` VARCHAR(45) NOT NULL COMMENT '作品名称',
   `save_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '保存时间',
   `template` TEXT COMMENT '模板',
@@ -92,7 +92,8 @@ ENGINE = InnoDB DEFAULT CHARSET=utf8 COMMENT = '草稿箱';
 DROP TABLE IF EXISTS `code_template`.`template`;
 CREATE TABLE IF NOT EXISTS `code_template`.`template` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
-  `body` VARCHAR(45) NOT NULL COMMENT '模板内容',
+  `UUID` VARCHAR(45) NOT NULL UNIQUE,
+  `body` TEXT NOT NULL COMMENT '模板内容',
   PRIMARY KEY (`id`))
 ENGINE = InnoDB DEFAULT CHARSET=utf8 COMMENT = '模板表';
 
@@ -103,9 +104,22 @@ ENGINE = InnoDB DEFAULT CHARSET=utf8 COMMENT = '模板表';
 DROP TABLE IF EXISTS `code_template`.`css`;
 CREATE TABLE IF NOT EXISTS `code_template`.`css` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
-  `body` VARCHAR(45) NOT NULL COMMENT '样式内容',
+  `UUID` VARCHAR(45) NOT NULL UNIQUE,
+  `body` TEXT NOT NULL COMMENT '样式内容',
   PRIMARY KEY (`id`))
 ENGINE = InnoDB DEFAULT CHARSET=utf8 COMMENT = '样式表';
+
+
+-- -----------------------------------------------------
+-- Table `code_template`.`params`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `code_template`.`params`;
+CREATE TABLE IF NOT EXISTS `code_template`.`params` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `UUID` VARCHAR(45) NOT NULL UNIQUE,
+  `body` TEXT NOT NULL COMMENT '参数内容',
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB DEFAULT CHARSET=utf8 COMMENT = '参数表';
 
 
 -- -----------------------------------------------------
@@ -114,17 +128,18 @@ ENGINE = InnoDB DEFAULT CHARSET=utf8 COMMENT = '样式表';
 DROP TABLE IF EXISTS `code_template`.`works`;
 CREATE TABLE IF NOT EXISTS `code_template`.`works` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
-  `UUID` VARCHAR(45) NOT NULL,
+  `UUID` VARCHAR(45) NOT NULL UNIQUE,
   `name` VARCHAR(45) NOT NULL COMMENT '名称',
   `create_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `type` ENUM('system', 'public', 'private') NOT NULL DEFAULT 'private' COMMENT '类型',
-  `status` ENUM('default', 'freeze') NOT NULL DEFAULT 'default' COMMENT '状态',
-  `desc` VARCHAR(45) NOT NULL COMMENT '描述',
+  `type` ENUM('system', 'public', 'private') NULL DEFAULT 'private' COMMENT '类型',
+  `status` ENUM('default', 'freeze') NULL DEFAULT 'default' COMMENT '状态',
+  `desc` VARCHAR(45) NULL COMMENT '描述',
   `collectors` INT DEFAULT 0 COMMENT '收藏人数',
   `pageviews` INT DEFAULT 0 COMMENT '浏览次数',
   `update_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  `template_id` INT NOT NULL COMMENT '模板Id',
-  `css_id` INT NOT NULL COMMENT '样式Id',
+  `template_id` VARCHAR(45) NOT NULL COMMENT '模板Id',
+  `css_id` VARCHAR(45) NOT NULL COMMENT '样式Id',
+  `params_id` VARCHAR(45) NOT NULL COMMENT '参数Id',
   `default_category_id` INT DEFAULT 0 COMMENT '默认种类Id',
   PRIMARY KEY (`id`, `UUID`))
 ENGINE = InnoDB DEFAULT CHARSET=utf8 COMMENT = '作品表';
