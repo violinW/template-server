@@ -14,9 +14,11 @@ module.exports = (knex)=> {
 
 //公共方法的存放路径
   const commonMethodPath = config.commonMethodPath;
+//公共引用的存放路径
+  const commonReferences = config.commonReferences;
 //数据结构存放路径
   const structure = require("./structure/structure")(businessModel);
-  const references = require("./references/commonReferences")(businessModel);
+  const references = require("./references/commonReferences")(commonReferences, businessModel);
 
   const _ = require('lodash');
 
