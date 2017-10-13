@@ -11,6 +11,11 @@ var tokenVerify = require('./modules/tokenVerify');
 /*----------------植入项目助手----------------*/
 var knex = require('./modules/db')
 const Assistent = require('./assistant/index')(knex);
+
+//项目助手的方法拓展写在这个文件
+require('./modules/extAnne')(Assistent);
+
+
 const Anne = Assistent.Anne;
 /*----------------植入项目助手----------------*/
 

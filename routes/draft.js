@@ -5,7 +5,6 @@ var dbName = require("../config/config.json").dbName;
 module.exports = (Anne)=> {
   var draftDao = require('../dao/draftDao')(dbName, Anne);
 
-
 // 添加草稿
   router.post('/add', function (req, res, next) {
     draftDao.addDraft(req, res, next);
