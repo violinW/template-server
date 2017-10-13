@@ -1,8 +1,8 @@
 var express = require('express');
-var router = express.Router();;
+var router = express.Router();
+var dbName = require("../config/config.json").dbName;
 
 module.exports = (Anne)=> {
-  var dbName = "code_template";
   var draftDao = require('../dao/draftDao')(dbName, Anne);
 
 

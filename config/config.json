@@ -16,5 +16,6 @@
   },
   "server": {
     "port": 3004
-  }
+  },
+  "dbName": "code_template"
 }
