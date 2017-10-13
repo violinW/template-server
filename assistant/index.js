@@ -1,40 +1,51 @@
 'use strict';
+/**
+ * 项目助手强依赖于knex包,请配置好knex包之后当做参数传入
+ * @param knex
+ * @returns {Assistant}
+ */
+module.exports = (knex)=> {
+  const version = "0.0.1";
+  const description = "我是项目助手，帮助整合项目资源";
+  const config = require('./config.json');
 
-const version = "0.0.1";
-const description = "我是项目助手，帮助整合项目资源";
-const config = require('./config.json');
-
-const knex = require('../modules/db');
-//const businessModel = require("icrm-business-model");
-const modelList = require("./case/modelEntity/modelList.js");
-const businessModel = require("express-business-model")(knex, modelList);
+  const modelList = require("./case/modelEntity/modelList.js");
+  const businessModel = require("express-business-model")(knex, modelList);
 
 //公共方法的存放路径
-const commonMethodPath = config.commonMethodPath;
+  const commonMethodPath = config.commonMethodPath;
 //数据结构存放路径
-const structure = require("./structure/structure")(businessModel);
-const references = require("./references/commonReferences")(businessModel);
+  const structure = require("./structure/structure")(businessModel);
+  const references = require("./references/commonReferences")(businessModel);
 
-const _ = require('lodash');
+  const _ = require('lodash');
 
-const commonMethod = require("./method/commonMethod")(commonMethodPath, _);
+  const commonMethod = require("./method/commonMethod")(commonMethodPath, _);
 
-function Assistant() {
-  this.version = version;
-  this.description = description;
-  this.extend = (methodName, methodBody)=> {
-    this.Anne[methodName] = methodBody;
+  /**
+   * 项目助手类
+   * @constructor
+   */
+  function Assistant() {
+    //版本
+    this.version = version;
+    //描述
+    this.description = description;
+    //拓展方法
+    this.extend = (methodName, methodBody)=> {
+      this.Anne[methodName] = methodBody;
+    };
+  }
+
+  Assistant.prototype.getBasicConfig = {
+    commonMethodPath,
+    DataStructure: structure
   };
+
+  Assistant.prototype.Anne = {
+    CommonMethod: commonMethod,
+    DataStructure: structure,
+    CommonReferences: references
+  };
+  return new Assistant();
 }
-
-Assistant.prototype.getBasicConfig = {
-  commonMethodPath,
-  DataStructure: structure
-};
-
-Assistant.prototype.Anne = {
-  CommonMethod: commonMethod,
-  DataStructure: structure,
-  CommonReferences: references
-};
-module.exports = new Assistant();

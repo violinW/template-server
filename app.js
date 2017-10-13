@@ -8,10 +8,16 @@ var cors = require('cors');
 var port = require('./config/config.json').server.port;
 var tokenVerify = require('./modules/tokenVerify');
 
-var index = require('./routes/index');
-var user = require('./routes/user');
-var works = require('./routes/works');
-var draft = require('./routes/draft');
+/*----------------植入项目助手----------------*/
+var knex = require('./modules/db')
+const Assistent = require('./assistant/index')(knex);
+const Anne = Assistent.Anne;
+/*----------------植入项目助手----------------*/
+
+var index = require('./routes/index')(Anne);
+var user = require('./routes/user')(Anne);
+var works = require('./routes/works')(Anne);
+var draft = require('./routes/draft')(Anne);
 
 var app = express();
 

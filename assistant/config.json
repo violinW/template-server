@@ -1,5 +1,6 @@
 {
   "commonMethodPath": {
-    "basicMethod": "../../modules/commonMethods"
+    "basicMethod": "../../modules/commonMethods",
+    "randomMethods": "../../modules/randomMethod"
   }
 }
