@@ -1,8 +1,7 @@
 'use strict';
 const jwt = require('jsonwebtoken');
 const secret = require('../config/config.json').authConfig.secret;
-const Logger = require('logger-romens');
-const logger = new Logger();
+const logger = require('log4js').getLogger();
 
 module.exports = (req, res, next)=> {
   //取出token
