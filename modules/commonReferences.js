@@ -1,5 +1,5 @@
 'use strict';
-const Logger = require('logger-romens');
+const Logger = require('log4js');
 const _ = require("lodash");
 const knex = require('./db');
 const jwt = require('jsonwebtoken');
@@ -9,7 +9,7 @@ const Promise = require('bluebird');
 
 module.exports = (businessModel)=>{
   return {
-    logger: new Logger(),
+    logger: Logger.getLogger(),
     knex,
     businessModel,
     _,
