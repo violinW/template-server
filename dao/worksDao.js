@@ -117,7 +117,7 @@ module.exports = (dbName, Anne) => {
 
       const workData = {
         mainData: {
-          UUID: dataType.createUUID(),
+          UUID: workId,
           name: data.name,
           template_id: dataType.createUUID(),
           css_id: dataType.createUUID(),
@@ -159,7 +159,13 @@ module.exports = (dbName, Anne) => {
           .then((list) => {
             let result = dataStructure.getModel('Works').sourceToDisplay(list);
             logger.trace(JSON.stringify(result));
-            res.status(200).json(result);
+            let myList = _.map(result, (item)=> {
+              return {
+                GUID: item.works_UUID,
+                name: item.worksList[0].name
+              }
+            });
+            res.status(200).json(myList);
           })
           .catch((error) => {
             logger.trace(error);

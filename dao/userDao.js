@@ -18,6 +18,7 @@ module.exports = (dbName, Anne)=> {
           data.GUID = dataType.createUUID();
           //用户编号
           data.userNumber = _.padStart((parseInt(lastNo) + 1).toString(), 8, '0');
+          data.status = "default";
           data.register_time = new Date();
           logger.debug('display data:' + JSON.stringify(data));
           //数据处理(将显示字段转换成数据库字段)

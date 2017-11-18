@@ -16,6 +16,11 @@ module.exports = (Anne)=> {
     draftDao.editDraft(req, res, next);
   });
 
+// 添加草稿
+  router.get('/delete/:id', function (req, res, next) {
+    draftDao.deleteDraft(req, res, next);
+  });
+
 // 按作者获取草稿列表
   router.get('/userList', function (req, res, next) {
     draftDao.getDraftList(req, res, next);

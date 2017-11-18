@@ -59,6 +59,26 @@ module.exports = (dbName, Anne) => {
           });
     },
     /**
+     * 删除草稿
+     * @param req
+     * @param res
+     * @param next
+     * @returns {Promise.<T>}
+     */
+    deleteDraft(req, res, next){
+      const draftID = req.params.id;
+      logger.debug(`draftID: ${draftID}`);
+
+      return draftMethods.deleteById(draftID)
+          .then((result) => {
+            res.status(200).json({msg: '删除草稿成功'});
+          })
+          .catch((error) => {
+            logger.trace(error);
+            next(error);
+          });
+    },
+    /**
      * 获取草稿列表
      * @param req
      * @param res

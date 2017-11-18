@@ -13,24 +13,24 @@
       "MappingTableKey": "UUID"
     }
   ],
-  "ForeignKey": [
+  "AntiForeignKey": [
     {
       "name": "css",
       "Table": "css",
       "ThisTableKey": "css_id",
-      "ForeignTableKey": "UUID"
+      "MainTableKey": "UUID"
     },
     {
       "name": "params",
       "Table": "params",
       "ThisTableKey": "params_id",
-      "ForeignTableKey": "UUID"
+      "MainTableKey": "UUID"
     },
     {
       "name": "template",
       "Table": "template",
       "ThisTableKey": "template_id",
-      "ForeignTableKey": "UUID"
+      "MainTableKey": "UUID"
     }
   ],
   "mode": {
@@ -39,7 +39,7 @@
     },
     "self": {
       "dataStructure": "Works",
-      "ForeignKey":[
+      "AntiForeignKey":[
         "css",
         "params",
         "template"

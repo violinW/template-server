@@ -14,7 +14,7 @@ module.exports = (Anne)=> {
     res.render('introduction', {title: 'Express'});
   });
 
-  /* 项目助手说明 */
+  /* 获取默认数据 */
   router.get('/getDefaultData', function (req, res, next) {
     indexDao.getDefaultData(req, res, next);
   });
