@@ -5,6 +5,7 @@ module.exports = (dbName, Anne) => {
 
   const worksMethods = CommonUseCase(dbName, "Works", "default");
   const myWorkDetailMethods = CommonUseCase(dbName, "Works", "self");
+  const myWorkInfoMethods = CommonUseCase(dbName, "Works", "info");
   const defaultCategoryMethods = CommonUseCase(dbName, "DefaultCategory", "default");
   const myWorksMethods = CommonUseCase(dbName, "MyWorks", "default");
   const cssMethods = CommonUseCase(dbName, "Css", "default");
@@ -71,11 +72,12 @@ module.exports = (dbName, Anne) => {
       const id = req.params.id;
       logger.debug(`id: ${id}`);
 
-      return myWorkDetailMethods.getJoinDetail(id)
+      return myWorkInfoMethods.getJoinDetail(id)
           .then((detail)=> {
             let data = {
               name: detail.name,
               type: detail.type,
+              defaultCategoryName: detail.default_categoryInfo && detail.default_categoryInfo.name,
               css: detail.cssInfo.body,
               params: detail.paramsInfo.body,
               template: detail.templateInfo.body
@@ -90,20 +92,35 @@ module.exports = (dbName, Anne) => {
     },
     publicWork(req, res, next) {
       const my_works_id = req.params.id;
-      const default_category_id = req.query.categoryId;
-      logger.debug(`id: ${my_works_id}, default_category_id: ${default_category_id}`);
+      const default_category_no = req.query.defaultCategoryNo;
+      logger.debug(`id: ${my_works_id}, default_category_no: ${default_category_no}`);
 
       return worksMethods.putSimpleData(my_works_id, {
         type: dataType.enum('works_type').convertToKey('公开类型'),
-        default_category_id
+        default_category_no
       })
-          .then((result) => {
-            res.status(200).send('更新成功');
-          })
-          .catch((error) => {
-            logger.trace(error);
-            next(error);
-          });
+        .then((result) => {
+          res.status(200).json({message:'更新成功'});
+        })
+        .catch((error) => {
+          logger.trace(error);
+          next(error);
+        });
+    },
+    cancelWork(req, res, next) {
+      const my_works_id = req.params.id;
+      logger.debug(`id: ${my_works_id}`);
+
+      return worksMethods.putSimpleData(my_works_id, {
+        type: dataType.enum('works_type').convertToKey('私有类型')
+      })
+        .then((result) => {
+          res.status(200).json({message:'更新成功'});
+        })
+        .catch((error) => {
+          logger.trace(error);
+          next(error);
+        });
     },
     addWork(req, res, next){
       const userID = req.userId;

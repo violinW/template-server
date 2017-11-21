@@ -90,10 +90,10 @@ module.exports=(businessModel)=> {
         "mappingType": "string",
         "defaultValue": dataType.string("321")
       },
-      "default_category_id": {
+      "default_category_no": {
         "type": "string",
         "describe": "默认模板Id",
-        "mappingName": "default_category_id",
+        "mappingName": "default_category_no",
         "mappingType": "string",
         "defaultValue": dataType.string("231")
       }

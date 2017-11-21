@@ -26,6 +26,11 @@ module.exports = (Anne)=> {
     worksDao.publicWork(req, res, next);
   });
 
+//取消发布作品
+  router.get('/cancel/:id', function (req, res, next) {
+    worksDao.cancelWork(req, res, next);
+  });
+
 //添加个人作品
   router.post('/add', function (req, res, next) {
     worksDao.addWork(req, res, next);

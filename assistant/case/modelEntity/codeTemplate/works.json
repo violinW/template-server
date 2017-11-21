@@ -31,6 +31,12 @@
       "Table": "template",
       "ThisTableKey": "template_id",
       "MainTableKey": "UUID"
+    },
+    {
+      "name": "defaultCategory",
+      "Table": "default_category",
+      "ThisTableKey": "default_category_no",
+      "MainTableKey": "number"
     }
   ],
   "mode": {
@@ -43,6 +49,15 @@
         "css",
         "params",
         "template"
+      ]
+    },
+    "info": {
+      "dataStructure": "Works",
+      "AntiForeignKey":[
+        "css",
+        "params",
+        "template",
+        "defaultCategory"
       ]
     }
   }

@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS `code_template`.`default_category` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL COMMENT '种类名称',
   `number` VARCHAR(45) DEFAULT '' COMMENT '种类编号',
-  `desc` VARCHAR(45) NULL COMMENT '描述',
+  `desc` VARCHAR(45) DEFAULT '' COMMENT '描述',
   PRIMARY KEY (`id`))
 ENGINE = InnoDB DEFAULT CHARSET=utf8 COMMENT = '系统默认类别表';
 
@@ -140,7 +140,7 @@ CREATE TABLE IF NOT EXISTS `code_template`.`works` (
   `template_id` VARCHAR(45) NOT NULL COMMENT '模板Id',
   `css_id` VARCHAR(45) NOT NULL COMMENT '样式Id',
   `params_id` VARCHAR(45) NOT NULL COMMENT '参数Id',
-  `default_category_id` INT DEFAULT 0 COMMENT '默认种类Id',
+  `default_category_no` VARCHAR(45) DEFAULT '0' COMMENT '默认种类Number',
   PRIMARY KEY (`id`, `UUID`))
 ENGINE = InnoDB DEFAULT CHARSET=utf8 COMMENT = '作品表';
 
