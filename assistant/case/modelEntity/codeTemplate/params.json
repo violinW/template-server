@@ -1,0 +1,9 @@
+{
+  "TableName": "params",
+  "UniqueKey": "UUID",
+  "mode": {
+    "default": {
+      "dataStructure": "Params"
+    }
+  }
+}

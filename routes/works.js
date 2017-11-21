@@ -17,7 +17,7 @@ module.exports = (Anne)=> {
   });
 
 //获取作品详情
-  router.get('/detail/:id', function (req, res, next) {
+  router.get('/myWorks/detail/:id', function (req, res, next) {
     worksDao.getWorksDetail(req, res, next);
   });
 
@@ -31,9 +31,14 @@ module.exports = (Anne)=> {
     worksDao.addWork(req, res, next);
   });
 
-//添加个人作品
+//获取个人作品列表
   router.get('/myWorks/list', function (req, res, next) {
     worksDao.myWorksList(req, res, next);
+  });
+
+//删除个人作品
+  router.get('/myWorks/delete/:id', function (req, res, next) {
+    worksDao.deleteMyWorks(req, res, next);
   });
 
 

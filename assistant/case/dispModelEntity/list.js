@@ -10,4 +10,5 @@ module.exports = (businessModel)=> {
     require('./codeTemplate/template')(businessModel);
     require('./codeTemplate/user')(businessModel);
     require('./codeTemplate/works')(businessModel);
+    require('./codeTemplate/params')(businessModel);
 }

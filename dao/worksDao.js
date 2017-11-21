@@ -1,12 +1,16 @@
 'use strict';
 module.exports = (dbName, Anne) => {
-  const {businessModel, _, logger, Promise} = Anne.CommonReferences;
+  const {businessModel, _, logger, Promise, knex} = Anne.CommonReferences;
   const {CommonUseCase, dataStructure, dataType} = businessModel;
 
   const worksMethods = CommonUseCase(dbName, "Works", "default");
-  const myUserMethods = CommonUseCase(dbName, "Works", "self");
+  const myWorkDetailMethods = CommonUseCase(dbName, "Works", "self");
   const defaultCategoryMethods = CommonUseCase(dbName, "DefaultCategory", "default");
   const myWorksMethods = CommonUseCase(dbName, "MyWorks", "default");
+  const cssMethods = CommonUseCase(dbName, "Css", "default");
+  const paramsMethods = CommonUseCase(dbName, "Params", "default");
+  const templateMethods = CommonUseCase(dbName, "Template", "default");
+
 
   return {
     getWorksGroupList(req, res, next) {
@@ -67,19 +71,17 @@ module.exports = (dbName, Anne) => {
       const id = req.params.id;
       logger.debug(`id: ${id}`);
 
-      return worksMethods.getSimpleDetail('UUID', id)
-          .then((details)=> {
-            return worksMethods.putSimpleData(id, {
-              "pageviews": (details[0].pageviews + 1)
-            })
-                .then(()=> {
-                  return details;
-                })
-          })
-          .then((details)=> {
-            let result = dataStructure.getModel('Works').sourceToDisplay(details.length && details[0]);
-            logger.trace(JSON.stringify(result));
-            res.status(200).json(result);
+      return myWorkDetailMethods.getJoinDetail(id)
+          .then((detail)=> {
+            let data = {
+              name: detail.name,
+              type: detail.type,
+              css: detail.cssInfo.body,
+              params: detail.paramsInfo.body,
+              template: detail.templateInfo.body
+            }
+            logger.trace(JSON.stringify(data));
+            res.status(200).json(data);
           })
           .catch((error) => {
             logger.trace(error);
@@ -138,7 +140,7 @@ module.exports = (dbName, Anne) => {
 
       return myWorksMethods.addSimpleList(myWorkMapData)
           .then(()=> {
-            return myUserMethods.addJoinData(workData)
+            return myWorkDetailMethods.addJoinData(workData)
           })
           .then((result) => {
             logger.trace(JSON.stringify(result));
@@ -171,6 +173,36 @@ module.exports = (dbName, Anne) => {
             logger.trace(error);
             next(error);
           });
+    },
+    deleteMyWorks(req, res, next){
+      const id = req.params.id;
+      logger.debug(`id: ${id}`);
+
+      return knex.transaction((trx)=>{
+        return worksMethods.getSimpleDetail('UUID', id)
+            .then((data)=>{
+              return myWorkDetailMethods.deleteByField('UUID', id, trx)
+                  .then((result)=>{
+                    return Promise.all([
+                      cssMethods.deleteByField('UUID', data[0]['css_id']),
+                      paramsMethods.deleteByField('UUID', data[0]['params_id']),
+                      templateMethods.deleteByField('UUID', data[0]['template_id'])
+                    ])
+                  })
+                  .then((result)=>{
+                    return myWorksMethods.deleteByField('works_UUID', id);
+                  })
+                  .then(trx.commit)
+                  .catch(trx.rollback)
+            })
+      })
+      .then((result)=>{
+        res.status(200).json({msg: '删除我的作品成功'});
+      })
+      .catch((error) => {
+        logger.trace(error);
+        next(error);
+      });
     }
   }
 };
