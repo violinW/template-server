@@ -81,6 +81,7 @@ CREATE TABLE IF NOT EXISTS `code_template`.`draft_box` (
   `template` TEXT COMMENT '模板',
   `css` TEXT COMMENT '样式',
   `params` TEXT COMMENT '参数',
+  `reference` TEXT COMMENT '引用',
   `user_UUID` VARCHAR(45) NOT NULL COMMENT '用户ID',
   PRIMARY KEY (`id`))
 ENGINE = InnoDB DEFAULT CHARSET=utf8 COMMENT = '草稿箱';
@@ -137,6 +138,7 @@ CREATE TABLE IF NOT EXISTS `code_template`.`works` (
   `collectors` INT DEFAULT 0 COMMENT '收藏人数',
   `pageviews` INT DEFAULT 0 COMMENT '浏览次数',
   `update_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `reference` TEXT COMMENT '引用',
   `template_id` VARCHAR(45) NOT NULL COMMENT '模板Id',
   `css_id` VARCHAR(45) NOT NULL COMMENT '样式Id',
   `params_id` VARCHAR(45) NOT NULL COMMENT '参数Id',

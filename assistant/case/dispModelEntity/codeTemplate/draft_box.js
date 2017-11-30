@@ -54,6 +54,13 @@ module.exports=(businessModel)=> {
         "mappingType": "string",
         "defaultValue": dataType.string("参数")
       },
+      "reference": {
+        "type": "string",
+        "describe": "引用",
+        "mappingName": "reference",
+        "mappingType": "string",
+        "defaultValue": dataType.string("引用")
+      },
       "user_UUID": {
         "type": "string",
         "describe": "用户ID",

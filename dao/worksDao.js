@@ -77,6 +77,7 @@ module.exports = (dbName, Anne) => {
             let data = {
               name: detail.name,
               type: detail.type,
+              reference: detail.reference,
               defaultCategoryName: detail.default_categoryInfo && detail.default_categoryInfo.name,
               css: detail.cssInfo.body,
               params: detail.paramsInfo.body,
@@ -138,6 +139,7 @@ module.exports = (dbName, Anne) => {
         mainData: {
           UUID: workId,
           name: data.name,
+          reference: data.reference,
           template_id: dataType.createUUID(),
           css_id: dataType.createUUID(),
           params_id: dataType.createUUID()

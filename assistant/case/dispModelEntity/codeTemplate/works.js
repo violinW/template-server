@@ -62,6 +62,13 @@ module.exports=(businessModel)=> {
         "mappingType": "int",
         "defaultValue": dataType.int("5")
       },
+      "reference": {
+        "type": "string",
+        "describe": "引用",
+        "mappingName": "reference",
+        "mappingType": "string",
+        "defaultValue": dataType.string("引用")
+      },
       //"update_time": {
       //  "type": "time",
       //  "describe": "更新时间",
