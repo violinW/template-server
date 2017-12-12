@@ -24,6 +24,7 @@ var user = require('./routes/user')(Anne);
 var works = require('./routes/works')(Anne);
 var draft = require('./routes/draft')(Anne);
 var category = require('./routes/category')(Anne);
+var publicMethods = require('./routes/public')(Anne);
 
 var app = express();
 
@@ -51,6 +52,7 @@ app.use(tokenVerify);
 app.use('/works', works);
 app.use('/draft', draft);
 app.use('/category', category);
+app.use('/public', publicMethods);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

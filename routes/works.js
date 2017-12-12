@@ -36,6 +36,11 @@ module.exports = (Anne)=> {
     worksDao.addWork(req, res, next);
   });
 
+//添加个人作品
+  router.post('/edit/:id', function (req, res, next) {
+    worksDao.editWork(req, res, next);
+  });
+
 //获取个人作品列表
   router.get('/myWorks/list', function (req, res, next) {
     worksDao.myWorksList(req, res, next);

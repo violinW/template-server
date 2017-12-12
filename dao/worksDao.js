@@ -15,8 +15,6 @@ module.exports = (dbName, Anne) => {
 
   return {
     getWorksGroupList(req, res, next) {
-      const data_size = req.query.size;
-      logger.debug(`data size: ${data_size}`);
 
       return defaultCategoryMethods.getAllDataList('id', 'asc')
           .then((default_category_list) => {
@@ -100,13 +98,13 @@ module.exports = (dbName, Anne) => {
         type: dataType.enum('works_type').convertToKey('公开类型'),
         default_category_no
       })
-        .then((result) => {
-          res.status(200).json({message:'更新成功'});
-        })
-        .catch((error) => {
-          logger.trace(error);
-          next(error);
-        });
+          .then((result) => {
+            res.status(200).json({message: '更新成功'});
+          })
+          .catch((error) => {
+            logger.trace(error);
+            next(error);
+          });
     },
     cancelWork(req, res, next) {
       const my_works_id = req.params.id;
@@ -115,13 +113,13 @@ module.exports = (dbName, Anne) => {
       return worksMethods.putSimpleData(my_works_id, {
         type: dataType.enum('works_type').convertToKey('私有类型')
       })
-        .then((result) => {
-          res.status(200).json({message:'更新成功'});
-        })
-        .catch((error) => {
-          logger.trace(error);
-          next(error);
-        });
+          .then((result) => {
+            res.status(200).json({message: '更新成功'});
+          })
+          .catch((error) => {
+            logger.trace(error);
+            next(error);
+          });
     },
     addWork(req, res, next){
       const userID = req.userId;
@@ -170,6 +168,49 @@ module.exports = (dbName, Anne) => {
             next(error);
           });
     },
+    /**
+     * 编辑作品
+     * @param req
+     * @param res
+     * @param next
+     * @returns {Promise<R>|Promise.<T>}
+     */
+    editWork(req, res, next){
+      const work_id = req.params.id;
+      const data = req.body;
+      logger.debug(`display data: ${JSON.stringify(data)}`);
+
+      const workData = {
+        mainData: {
+          name: data.name,
+          reference: data.reference,
+          template_id: dataType.createUUID(),
+          css_id: dataType.createUUID(),
+          params_id: dataType.createUUID()
+        },
+        cssData: [{
+          body: data.css
+        }],
+        paramsData: [{
+          body: data.params
+        }],
+        templateData: [{
+          body: data.template
+        }]
+      };
+
+      logger.debug(`work data: ${JSON.stringify(workData)}`);
+
+      return myWorkDetailMethods.putJoinData(work_id, workData)
+          .then((result) => {
+            logger.trace(JSON.stringify(result));
+            res.status(200).json({msg: '编辑我的作品成功'});
+          })
+          .catch((error) => {
+            logger.trace(error);
+            next(error);
+          });
+    },
     myWorksList(req, res, next){
       const userID = req.userId;
       logger.debug(`userID: ${userID}`);
@@ -197,31 +238,54 @@ module.exports = (dbName, Anne) => {
       const id = req.params.id;
       logger.debug(`id: ${id}`);
 
-      return knex.transaction((trx)=>{
+      return knex.transaction((trx)=> {
         return worksMethods.getSimpleDetail('UUID', id)
-            .then((data)=>{
+            .then((data)=> {
               return myWorkDetailMethods.deleteByField('UUID', id, trx)
-                  .then((result)=>{
+                  .then((result)=> {
                     return Promise.all([
                       cssMethods.deleteByField('UUID', data[0]['css_id']),
                       paramsMethods.deleteByField('UUID', data[0]['params_id']),
                       templateMethods.deleteByField('UUID', data[0]['template_id'])
                     ])
                   })
-                  .then((result)=>{
+                  .then((result)=> {
                     return myWorksMethods.deleteByField('works_UUID', id);
                   })
                   .then(trx.commit)
                   .catch(trx.rollback)
             })
       })
-      .then((result)=>{
-        res.status(200).json({msg: '删除我的作品成功'});
-      })
-      .catch((error) => {
-        logger.trace(error);
-        next(error);
-      });
+          .then((result)=> {
+            res.status(200).json({msg: '删除我的作品成功'});
+          })
+          .catch((error) => {
+            logger.trace(error);
+            next(error);
+          });
+    },
+    getHomepageWorkList(req, res, next){
+      let pageSize = 10, page = 1;
+
+      return defaultCategoryMethods.getAllDataList('number', 'asc')
+          .then((result) => {
+            let data = dataStructure.getModel('Default_Category').sourceToDisplay(result);
+            logger.debug(`categorys: ${JSON.stringify(data)}`);
+            return Promise.map(data, (category)=> {
+              return myWorksMethods.getSimpleList({"default_category_no": category.number}, null, null, pageSize, page, "update_time", "desc")
+                  .then((works)=> {
+                    return dataStructure.getModel('Works').sourceToDisplay(works);
+                  });
+            })
+          })
+          .then((result) => {
+            logger.debug(`result: ${JSON.stringify(result)}`);
+            res.status(200).json(result);
+          })
+          .catch((error) => {
+            logger.trace(error);
+            next(error);
+          });
     }
   }
 };
