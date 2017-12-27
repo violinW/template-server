@@ -11,5 +11,10 @@ module.exports = (Anne)=> {
     worksDao.getHomepageWorkList(req, res, next);
   });
 
+// 获取作品搜索列表
+  router.get('/work/search', function (req, res, next) {
+    worksDao.getWorkSearchList(req, res, next);
+  });
+
   return router;
 }

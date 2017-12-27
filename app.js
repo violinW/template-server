@@ -45,6 +45,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/user', user);
+app.use('/public', publicMethods);
 
 app.use('/', index);
 //验证token并查询用户信息
@@ -52,7 +53,6 @@ app.use(tokenVerify);
 app.use('/works', works);
 app.use('/draft', draft);
 app.use('/category', category);
-app.use('/public', publicMethods);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

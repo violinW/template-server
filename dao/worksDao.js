@@ -265,21 +265,55 @@ module.exports = (dbName, Anne) => {
           });
     },
     getHomepageWorkList(req, res, next){
-      let pageSize = 10, page = 1;
+      let pageSize = 5, page = 1;
 
       return defaultCategoryMethods.getAllDataList('number', 'asc')
           .then((result) => {
             let data = dataStructure.getModel('Default_Category').sourceToDisplay(result);
             logger.debug(`categorys: ${JSON.stringify(data)}`);
             return Promise.map(data, (category)=> {
-              return myWorksMethods.getSimpleList({"default_category_no": category.number}, null, null, pageSize, page, "update_time", "desc")
+              return knex.withSchema(dbName)
+                  .from('works')
+                  .leftJoin('css', 'works.css_id', 'css.UUID')
+                  .leftJoin('params', 'works.params_id', 'params.UUID')
+                  .leftJoin('template', 'works.template_id', 'template.UUID')
+                  .select(['works.UUID as GUID', 'name', 'reference', 'works.desc as works', 'css.body as css', 'params.body as params', 'template.body as template'])
+                  .whereIn("type", ["system", "public"])
+                  .andWhere("default_category_no", category.number)
+                  .offset((page - 1) * pageSize)
+                  .limit(pageSize)
                   .then((works)=> {
-                    return dataStructure.getModel('Works').sourceToDisplay(works);
+                    logger.debug(`works: ${JSON.stringify(works)}`);
+                    return {
+                      name: category.name,
+                      number: category.number,
+                      list: dataStructure.getModel('Works').sourceToDisplay(works)
+                    };
                   });
             })
           })
           .then((result) => {
             logger.debug(`result: ${JSON.stringify(result)}`);
+            res.status(200).json(result);
+          })
+          .catch((error) => {
+            logger.trace(error);
+            next(error);
+          });
+    },
+    getWorkSearchList(req, res, next){
+      const number = req.query.number;
+      const keywords = req.query.keywords;
+      const pageSize = req.query.pagesize;
+      const page = req.query.page;
+      logger.debug(`number: ${number}, keywords: ${keywords}, pageSize: ${pageSize}, page: ${page}`);
+
+      return myWorkInfoMethods.getJoinList(number ? {
+        "default_category_no": number
+      } : {}, keywords, 'name', pageSize, page, 'update_time', 'desc')
+          .then((list) => {
+            let result = dataStructure.getModel('Works').sourceToDisplay(list);
+            logger.trace(JSON.stringify(result));
             res.status(200).json(result);
           })
           .catch((error) => {

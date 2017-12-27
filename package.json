@@ -13,7 +13,7 @@
     "debug": "=2.6.0",
     "ejs": "=2.5.5",
     "express": "=4.14.1",
-    "express-business-model": "=1.0.10-beta",
+    "express-business-model": "=1.0.13-beta",
     "knex": "=0.12.6",
     "lodash": "=4.15.0",
     "morgan": "=1.7.0",
