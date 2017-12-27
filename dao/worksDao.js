@@ -22,7 +22,7 @@ module.exports = (dbName, Anne) => {
               return worksMethods.getList({
                 'default_category_id': item.id,
                 'type': 'public'
-              }, null, null, 10, 1, 'create_time', 'desc')
+              }, null, null, 1, 10, 'create_time', 'desc')
                   .then((list) => {
                     return {
                       categoryId: item.id,
@@ -55,7 +55,7 @@ module.exports = (dbName, Anne) => {
       const keywords = req.query.keywords;
       logger.debug(`page: ${page}, pageSize: ${pageSize}, keywords: ${keywords}`);
 
-      return worksMethods.getList({}, keywords, 'name', pageSize, page, 'create_time', 'desc')
+      return worksMethods.getList({}, keywords, 'name', page, pageSize, 'create_time', 'desc')
           .then((list) => {
             let result = dataStructure.getModel('Works').sourceToDisplay(list);
             logger.trace(JSON.stringify(result));
@@ -310,7 +310,7 @@ module.exports = (dbName, Anne) => {
 
       return myWorkInfoMethods.getJoinList(number ? {
         "default_category_no": number
-      } : {}, keywords, 'name', pageSize, page, 'update_time', 'desc')
+      } : {}, keywords, 'name', page, pageSize, 'update_time', 'desc')
           .then((list) => {
             let result = dataStructure.getModel('Works').sourceToDisplay(list);
             logger.trace(JSON.stringify(result));

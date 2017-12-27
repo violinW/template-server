@@ -106,7 +106,7 @@ module.exports = (dbName, Anne)=> {
 
       return loginMethods.getList({
           nickname: username
-        }, null, null, 10, 1, 'register_time', 'desc')
+        }, null, null, 1, 10, 'register_time', 'desc')
         .then(list=> {
           //如果能够查到用户数据则验证通过,否则验证失败
           if (list.length === 0) {
