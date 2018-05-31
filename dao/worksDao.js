@@ -310,11 +310,38 @@ module.exports = (dbName, Anne) => {
 
       return myWorkInfoMethods.getJoinList(number ? {
         "default_category_no": number
-      } : {}, keywords, 'name', page, pageSize, 'update_time', 'desc')
+      } : {}, keywords, 'name', page, pageSize, 'id', 'desc')
           .then((list) => {
             let result = dataStructure.getModel('Works').sourceToDisplay(list);
             logger.trace(JSON.stringify(result));
             res.status(200).json(result);
+          })
+          .catch((error) => {
+            logger.trace(error);
+            next(error);
+          });
+    },
+    getAuthorSearchList(req, res, next){
+      const authorId = req.query.authorId;
+      logger.debug(`authorId: ${authorId}`);
+
+      return myWorksMethods.getList({
+        "user_UUID": authorId
+      }, null, null, null, null, 'update_time', 'desc')
+          .then((list) => {
+            let Ids = _.map(list, (item)=> {
+              return item.works_UUID;
+            });
+
+            return knex.withSchema(dbName)
+                .from('works')
+                .where('UUID', 'in', Ids)
+                .select('*')
+                .then((dataList)=> {
+                  let result = dataStructure.getModel('Works').sourceToDisplay(dataList);
+                  logger.trace(JSON.stringify(result));
+                  res.status(200).json(result);
+                })
           })
           .catch((error) => {
             logger.trace(error);

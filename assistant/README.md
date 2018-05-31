@@ -1,6 +1,7 @@
 使用方法:
 
 项目助手强依赖于knex,请将配置好数据库参数的knex当做项目助手的参数传入
+同时还强依赖于express-business-model包,项目中请安装好该包
 
 实例化一个项目助手:
 const Assistent = require('../assistant/index')(knex);

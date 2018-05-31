@@ -13,7 +13,7 @@ module.exports = (dbName, Anne)=> {
       return registerMethods.getAllDataList('register_time', 'desc')
         .then((list)=> {
           const lastNo = list.length ? list[0].user_number : 0;
-          logger.debug('lastNo:' + list);
+          logger.debug('lastNo:' + lastNo);
           const data = req.body;
           data.GUID = dataType.createUUID();
           //用户编号

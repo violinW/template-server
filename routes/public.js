@@ -16,5 +16,25 @@ module.exports = (Anne)=> {
     worksDao.getWorkSearchList(req, res, next);
   });
 
+// 获取作品分组列表
+  router.get('/list/group', function (req, res, next) {
+    worksDao.getWorksGroupList(req, res, next);
+  });
+
+//获取作品筛选列表
+  router.get('/list/filter', function (req, res, next) {
+    worksDao.getWorksList(req, res, next);
+  });
+
+//获取作品详情
+  router.get('/myWorks/detail/:id', function (req, res, next) {
+    worksDao.getWorksDetail(req, res, next);
+  });
+
+// 获取作者作品列表
+  router.get('/work/author', function (req, res, next) {
+    worksDao.getAuthorSearchList(req, res, next);
+  });
+
   return router;
 }
