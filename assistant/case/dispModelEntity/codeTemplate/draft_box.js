@@ -24,7 +24,7 @@ module.exports=(businessModel)=> {
   })
   dataStructure.setModel({
     name: "Draft_Box_Ext",
-    describe: "草稿箱模型",
+    describe: "草稿箱拓展模型",
     structure: {
       "save_time": {
         "type": "time",
