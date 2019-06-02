@@ -1,0 +1,9 @@
+{
+  "TableName": "order",
+  "UniqueKey": "id",
+  "mode": {
+    "default": {
+      "dataStructure": "Order"
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "TableName": "product",
+  "UniqueKey": "id",
+  "mode": {
+    "default": {
+      "dataStructure": "Product"
+    }
+  }
+}

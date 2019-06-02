@@ -1,0 +1,9 @@
+{
+  "TableName": "order_single_product",
+  "UniqueKey": "id",
+  "mode": {
+    "default": {
+      "dataStructure": "Order_Single_Product"
+    }
+  }
+}

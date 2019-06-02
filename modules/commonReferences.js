@@ -7,6 +7,7 @@ const config = require('../config/config.json');
 const bcrypt = require('bcrypt');
 const Promise = require('bluebird');
 const logger = log4js.getLogger();
+const moment = require('moment');
 logger.level = 'debug';
 module.exports = (businessModel)=>{
   return {
@@ -17,6 +18,7 @@ module.exports = (businessModel)=>{
     jwt,
     config,
     bcrypt,  //加密算法
-    Promise
+    Promise,
+    moment
   };
 }

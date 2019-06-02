@@ -1,0 +1,9 @@
+{
+  "TableName": "hotel_brand",
+  "UniqueKey": "id",
+  "mode": {
+    "default": {
+      "dataStructure": "Hotel_Brand"
+    }
+  }
+}

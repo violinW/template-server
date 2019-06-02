@@ -1,9 +1,0 @@
-{
-  "TableName": "css",
-  "UniqueKey": "UUID",
-  "mode": {
-    "default": {
-      "dataStructure": "Css"
-    }
-  }
-}

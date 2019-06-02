@@ -1,0 +1,9 @@
+{
+  "TableName": "operator",
+  "UniqueKey": "id",
+  "mode": {
+    "default": {
+      "dataStructure": "Operator"
+    }
+  }
+}

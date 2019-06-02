@@ -1,0 +1,9 @@
+{
+  "TableName": "unit",
+  "UniqueKey": "id",
+  "mode": {
+    "default": {
+      "dataStructure": "Unit"
+    }
+  }
+}

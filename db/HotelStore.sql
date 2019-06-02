@@ -1,0 +1,9 @@
+DROP TABLE IF EXISTS `hotel_store`;
+CREATE TABLE IF NOT EXISTS `hotel_store` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `brand_id` INT NOT NULL COMMENT '酒店品牌Id',
+  `hotel_store_name` VARCHAR(32) NOT NULL COMMENT '酒店门店名称',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+)ENGINE = InnoDB DEFAULT CHARSET=utf8 COMMENT = '酒店门店表';

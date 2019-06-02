@@ -1,9 +1,0 @@
-{
-  "TableName": "template",
-  "UniqueKey": "UUID",
-  "mode": {
-    "default": {
-      "dataStructure": "Template"
-    }
-  }
-}

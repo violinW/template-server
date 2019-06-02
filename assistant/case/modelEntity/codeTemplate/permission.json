@@ -1,0 +1,9 @@
+{
+  "TableName": "permission",
+  "UniqueKey": "id",
+  "mode": {
+    "default": {
+      "dataStructure": "Permission"
+    }
+  }
+}

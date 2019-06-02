@@ -1,0 +1,9 @@
+{
+  "TableName": "hotel_store",
+  "UniqueKey": "id",
+  "mode": {
+    "default": {
+      "dataStructure": "Hotel_Store"
+    }
+  }
+}

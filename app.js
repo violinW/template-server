@@ -19,12 +19,10 @@ require('./modules/extAnne')(Assistent);
 const Anne = Assistent.Anne;
 /*----------------植入项目助手----------------*/
 
-var index = require('./routes/index')(Anne);
+var hotel = require('./routes/hotel')(Anne);
 var user = require('./routes/user')(Anne);
-var works = require('./routes/works')(Anne);
-var draft = require('./routes/draft')(Anne);
-var category = require('./routes/category')(Anne);
-var publicMethods = require('./routes/public')(Anne);
+var order = require('./routes/order')(Anne);
+var setting = require('./routes/setting')(Anne);
 
 var app = express();
 
@@ -44,15 +42,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use('/hotel', hotel);
 app.use('/user', user);
-app.use('/public', publicMethods);
-app.use('/category', category);
-
-app.use('/', index);
-//验证token并查询用户信息
-app.use(tokenVerify);
-app.use('/draft', draft);
-app.use('/works', works);
+app.use('/order', order);
+app.use('/setting', setting);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
